@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CustomerUser;
+use Illuminate\Support\Facades\DB;
 
 class AgentCustomerController extends Controller
 {
@@ -11,6 +12,12 @@ class AgentCustomerController extends Controller
     {
         $users = CustomerUser::all();
         return view('agent.customer.index', compact('users'));
+    }
+
+    public function getCandidate($id)
+    {
+        $candidate = DB::table('customer_users')->where('id', $id)->first();
+        return response()->json($candidate);
     }
 
     public function create()
@@ -26,6 +33,17 @@ class AgentCustomerController extends Controller
             'status' => 'required|string|max:255',
             'matching' => 'required|integer|min:0|max:5',
             'created_at' => 'required|date',
+            'age' => 'nullable|integer',
+            'gender' => 'nullable|string|max:255',
+            'desired_salary_min' => 'nullable|integer',
+            'desired_salary_max' => 'nullable|integer',
+            'catch_copy' => 'nullable|string|max:60',
+            'career_description' => 'nullable|string|max:250',
+            'num_companies_worked' => 'nullable|integer',
+            'skill_distribution' => 'nullable|json',
+            'notable_achievements' => 'nullable|string',
+            'recommendation' => 'nullable|string',
+            'initial' => 'nullable|string' // 新しいフィールドのバリデーション
         ]);
 
         CustomerUser::create($request->all());
@@ -47,6 +65,17 @@ class AgentCustomerController extends Controller
             'status' => 'required|string|max:255',
             'matching' => 'required|integer|min:0|max:5',
             'created_at' => 'required|date',
+            'age' => 'nullable|integer',
+            'gender' => 'nullable|string|max:255',
+            'desired_salary_min' => 'nullable|integer',
+            'desired_salary_max' => 'nullable|integer',
+            'catch_copy' => 'nullable|string|max:60',
+            'career_description' => 'nullable|string|max:250',
+            'num_companies_worked' => 'nullable|integer',
+            'skill_distribution' => 'nullable|json',
+            'notable_achievements' => 'nullable|string',
+            'recommendation' => 'nullable|string',
+            'initial' => 'nullable|string' // 新しいフィールドのバリデーション
         ]);
 
         $user = CustomerUser::findOrFail($id);

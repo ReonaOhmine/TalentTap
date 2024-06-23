@@ -6,6 +6,8 @@ use App\Http\Controllers\Employer\Auth\LoginController as EmployerLoginControlle
 use App\Http\Controllers\Employer\Auth\SignupController as EmployerSignupController;
 use App\Http\Controllers\AgentCustomerController;
 use App\Http\Controllers\MessagesController;
+use App\Http\Controllers\Employer\CustomerController;
+
 
 // ウェルカムページ
 Route::get('/', function () {
@@ -39,7 +41,9 @@ Route::post('/agent/customer/store', [AgentCustomerController::class, 'store'])-
 // 支援中ユーザーの編集画面の表示
 Route::get('/agent/customer/edit/{id}', [AgentCustomerController::class, 'edit'])->name('agent.customer.edit');
 // 支援中ユーザーの更新処理
-Route::post('/agent/customer/update/{id}', [AgentCustomerController::class, 'update'])->name('agent.customer.update');
+// Route::post('/agent/customer/update/{id}', [AgentCustomerController::class, 'update'])->name('agent.customer.update');
+Route::patch('/agent/customer/update/{id}', [AgentCustomerController::class, 'update'])->name('agent.customer.update');
+
 
 // エージェントのメッセージ機能の表示
 Route::middleware('auth:agent')->group(function () {
@@ -70,3 +74,14 @@ Route::middleware('auth:employer')->group(function () {
         return view('messages');
     })->name('employer.messages');
 });
+
+// 利用企業候補者検索ページの表示
+Route::get('/employer/customer/search', function () {
+    return view('employer.customer.search');
+});
+// ->middleware('auth:employer')->name('employer.customer.search');
+
+// 候補者データを取得するためのルートを追加
+Route::get('/employer/customer/data', [CustomerController::class, 'getCustomerData'])->name('employer.customer.data');
+
+Route::get('/api/get-candidate/{id}', [AgentCustomerController::class, 'getCandidate']);

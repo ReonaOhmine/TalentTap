@@ -16,6 +16,17 @@ class CustomerUser extends Model
         'position',
         'status',
         'matching',
-        'created_at'
+        'created_at',
+        'age',
+        'gender',
+        'desired_salary_min',
+        'desired_salary_max',
+        'catch_copy',
+        'career_description',
+        'num_companies_worked',
+        'skill_distribution',
+        'notable_achievements',
+        'recommendation',
+        'initial' // 新しいフィールドを追加
     ];
 }

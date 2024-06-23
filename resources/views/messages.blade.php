@@ -6,21 +6,21 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-white">
     <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
         <div class="flex flex-col">
             <div class="-m-1.5 overflow-x-auto">
                 <div class="p-1.5 min-w-full inline-block align-middle">
-                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden dark:bg-neutral-800 dark:border-neutral-700">
-                        <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-neutral-700">
+                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                        <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200">
                             <div>
-                                <h2 class="text-xl font-semibold text-gray-800 dark:text-neutral-200">Messages</h2>
-                                <p class="text-sm text-gray-600 dark:text-neutral-400">Send and receive messages.</p>
+                                <h2 class="text-xl font-semibold text-gray-800">Messages</h2>
+                                <p class="text-sm text-gray-600">Send and receive messages.</p>
                             </div>
                         </div>
                         <div class="px-6 py-4">
-                            <div id="messages" class="mb-4 bg-gray-50 dark:bg-neutral-700 p-4 rounded-lg h-64 overflow-y-auto"></div>
-                            <textarea id="messageInput" class="block w-full border border-gray-300 rounded-lg p-2 mb-2 dark:bg-neutral-700 dark:border-neutral-600 dark:text-white" placeholder="メッセージを入力..."></textarea>
+                            <div id="messages" class="mb-4 bg-gray-50 p-4 rounded-lg h-64 overflow-y-auto"></div>
+                            <textarea id="messageInput" class="block w-full border border-gray-300 rounded-lg p-2 mb-2" placeholder="メッセージを入力..."></textarea>
                             <button onclick="sendMessage()" class="py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700">送信</button>
                         </div>
                     </div>
@@ -78,7 +78,7 @@
         function addMessageToChat(message) {
             const messagesDiv = document.getElementById('messages');
             const messageElement = document.createElement('div');
-            messageElement.classList.add('mb-2', 'p-2', 'bg-white', 'rounded-lg', 'shadow-sm', 'dark:bg-neutral-800');
+            messageElement.classList.add('mb-2', 'p-2', 'bg-white', 'rounded-lg', 'shadow-sm');
             messageElement.innerText = message;
             messagesDiv.appendChild(messageElement);
             messagesDiv.scrollTop = messagesDiv.scrollHeight; // 最新メッセージにスクロール
