@@ -7,6 +7,10 @@ use App\Http\Controllers\Employer\Auth\SignupController as EmployerSignupControl
 use App\Http\Controllers\AgentCustomerController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\Employer\CustomerController;
+use App\Http\Controllers\Agent\ProfileController as AgentProfileController;
+use App\Http\Controllers\Employer\ProfileController as EmployerProfileController;
+
+
 
 
 // ウェルカムページ
@@ -44,13 +48,21 @@ Route::get('/agent/customer/edit/{id}', [AgentCustomerController::class, 'edit']
 // Route::post('/agent/customer/update/{id}', [AgentCustomerController::class, 'update'])->name('agent.customer.update');
 Route::patch('/agent/customer/update/{id}', [AgentCustomerController::class, 'update'])->name('agent.customer.update');
 
+// エージェントのマイページ表示
+Route::middleware('auth:agent')->group(function () {
+    Route::get('/agent/profile', [AgentProfileController::class, 'show'])->name('agent.profile');
+    Route::get('/agent/profile/edit', [AgentProfileController::class, 'edit'])->name('agent.profile.edit');
+    Route::patch('/agent/profile', [AgentProfileController::class, 'update'])->name('agent.profile.update');
+});
+
+
 
 // エージェントのメッセージ機能の表示
-Route::middleware('auth:agent')->group(function () {
-    Route::get('/agent/messages', function () {
-        return view('messages');
-    })->name('agent.messages');
-});
+// Route::middleware('auth:agent')->group(function () {
+//     Route::get('/agent/messages', function () {
+//         return view('messages');
+//     })->name('agent.messages');
+// });
 
 //*************利用企業関連*************//
 // 利用企業ダッシュボードページの表示
@@ -69,11 +81,11 @@ Route::get('/employer/login', [EmployerLoginController::class, 'create'])->name(
 Route::post('/employer/login', [EmployerLoginController::class, 'store']);
 
 // 利用企業のメッセージ機能の表示
-Route::middleware('auth:employer')->group(function () {
-    Route::get('/employer/messages', function () {
-        return view('messages');
-    })->name('employer.messages');
-});
+// Route::middleware('auth:employer')->group(function () {
+//     Route::get('/employer/messages', function () {
+//         return view('messages');
+//     })->name('employer.messages');
+// });
 
 // 利用企業候補者検索ページの表示
 Route::get('/employer/customer/search', function () {
@@ -85,3 +97,10 @@ Route::get('/employer/customer/search', function () {
 Route::get('/employer/customer/data', [CustomerController::class, 'getCustomerData'])->name('employer.customer.data');
 
 Route::get('/api/get-candidate/{id}', [AgentCustomerController::class, 'getCandidate']);
+
+// 利用企業のマイページ表示
+Route::middleware('auth:employer')->group(function () {
+    Route::get('/employer/profile', [EmployerProfileController::class, 'show'])->name('employer.profile');
+    Route::get('/employer/profile/edit', [EmployerProfileController::class, 'edit'])->name('employer.profile.edit');
+    Route::patch('/employer/profile', [EmployerProfileController::class, 'update'])->name('employer.profile.update');
+});

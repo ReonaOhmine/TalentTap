@@ -5,56 +5,6 @@
 @section('content')
     <div class="container mx-auto">
         <h1 class="text-xl font-bold mb-4">求職者情報</h1>
-        <div class="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box">
-            <input type="checkbox" class="peer" />
-            <div class="collapse-title text-xl font-medium">
-                検索条件
-            </div>
-            <div class="collapse-content">
-                <form id="search-form" class="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
-                    <div class="col-span-1 lg:col-span-2">
-                        <input type="text" id="keyword" placeholder="フリーワード検索" class="input input-bordered w-full" />
-                    </div>
-                    <div>
-                        <input type="number" id="age-min" placeholder="年齢（下限）" class="input input-bordered w-full" />
-                    </div>
-                    <div>
-                        <input type="number" id="age-max" placeholder="年齢（上限）" class="input input-bordered w-full" />
-                    </div>
-                    <div>
-                        <input type="number" id="salary-min" placeholder="希望年収（下限）" class="input input-bordered w-full" />
-                    </div>
-                    <div>
-                        <input type="number" id="salary-max" placeholder="希望年収（上限）" class="input input-bordered w-full" />
-                    </div>
-                    <div>
-                        <select id="gender" class="select select-bordered w-full">
-                            <option value="">性別</option>
-                            <option value="男性">男性</option>
-                            <option value="女性">女性</option>
-                        </select>
-                    </div>
-                    <div class="col-span-1 lg:col-span-2">
-                        <select id="job-types" class="select select-bordered w-full" multiple>
-                            <option value="マーケター">マーケター</option>
-                            <option value="デジタルマーケティング">デジタルマーケティング</option>
-                            <!-- 他の職種を追加 -->
-                        </select>
-                    </div>
-                    <div>
-                        <select id="sort-by" class="select select-bordered w-full">
-                            <option value="">ソート</option>
-                            <option value="age">年齢</option>
-                            <option value="salary">希望年収</option>
-                            <option value="match">マッチ度</option>
-                        </select>
-                    </div>
-                    <div class="col-span-1 lg:col-span-2">
-                        <button type="submit" class="btn btn-primary w-full" style="background-color: #6C63FF; border-color: #6C63FF;">検索</button>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
 
     <main class="container mx-auto p-6">
@@ -74,10 +24,55 @@
     <!-- モーダル -->
     <div id="modal" class="modal">
         <div class="modal-box">
-            <h3 class="font-bold text-lg" id="modal-name"></h3>
-            <p class="py-4" id="modal-details">ここに詳細情報が表示されます。</p>
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg" id="modal-title">詳細情報</h3>
+                <button class="btn btn-sm btn-circle" onclick="closeModal()">✕</button>
+            </div>
+            <div class="py-4" id="modal-details">
+                <div class="flex items-center">
+                    <div class="flex-none w-24">
+                        <img id="profile-picture" src="" alt="Profile Picture" class="rounded-full">
+                    </div>
+                    <div class="ml-4 flex flex-col">
+                        <p class="text-lg font-semibold" id="modal-name-age-gender"></p>
+                        <p class="text-sm text-gray-600" id="modal-job-description"></p>
+                    </div>
+                    <div class="ml-auto text-right">
+                        <h4 class="font-bold text-md mb-2">経験企業数</h4>
+                        <p class="text-gray-700" id="modal-num-companies-worked"></p>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    {{-- <h4 class="font-bold text-md mb-2">キャッチコピー</h4> --}}
+                    <p class="text-lg font-bold text-blue-700" id="modal-catch-copy"></p>
+                </div>
+                <div class="mt-4">
+                    <h4 class="font-bold text-md mb-2">職務要約</h4>
+                    <p class="text-gray-700" id="modal-career-description"></p>
+                </div>
+                <div class="mt-4">
+                    <h4 class="font-bold text-md mb-2">特に得意な領域</h4>
+                    <div class="text-gray-700" id="modal-skill-map"></div>
+                </div>
+                <div class="mt-4">
+                    <h4 class="font-bold text-md mb-2">過去実績</h4>
+                    <p class="text-gray-700" id="modal-notable-achievements"></p>
+                </div>
+                {{-- <div class="mt-4">
+                    <h4 class="font-bold text-md mb-2">推奨事項</h4>
+                    <p class="text-gray-700" id="modal-recommendation"></p>
+                </div> --}}
+                <div class="mt-4">
+                    <h4 class="font-bold text-md mb-2">希望年収</h4>
+                    <p class="text-gray-700" id="modal-desired-salary"></p>
+                </div>
+                <div class="mt-4">
+                    <h4 class="font-bold text-md mb-2">職務の希望</h4>
+                    <p class="text-gray-700" id="modal-work-preference"></p>
+                </div>
+            </div>
             <div class="modal-action">
-                <button class="btn" onclick="closeModal()" style="background-color: #6C63FF; border-color: #6C63FF;">閉じる</button>
+                <button class="btn" onclick="closeModal()">閉じる</button>
             </div>
         </div>
     </div>
@@ -98,226 +93,276 @@
         .details {
             -webkit-line-clamp: 8;
             height: 16rem;
-            white-space: pre-wrap; /* 追加 */
+            white-space: pre-wrap;
         }
         .recommendation {
             -webkit-line-clamp: 4;
             height: 8rem;
-            white-space: pre-wrap; /* 追加 */
+            white-space: pre-wrap;
+        }
+
+        .modal {
+            display: none; /* 初期状態で非表示 */
+        }
+
+        .modal-open {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-box {
+            max-width: 600px;
+            width: 100%;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-box img {
+            width: 100%;
+        }
+
+        .modal-box .flex {
+            display: flex;
+        }
+
+        .modal-box .flex .w-24 {
+            width: 6rem;
+        }
+
+        .modal-box .flex .ml-4 {
+            margin-left: 1rem;
+        }
+
+        .modal-box .mt-4 {
+            margin-top: 1rem;
+        }
+
+        .modal-box .text-md {
+            font-size: 1.125rem;
+        }
+
+        .modal-box .font-bold {
+            font-weight: bold;
+        }
+
+        .modal-box .text-gray-700 {
+            color: #4a5568;
+        }
+
+        .skill-map-item {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .skill-map-label {
+            font-weight: bold;
+            background-color: #4a90e2;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            margin-right: 0.5rem;
+        }
+
+        .skill-map-description {
+            margin-left: 4px;
         }
     </style>
 
     <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const candidates = [];
-    let currentPage = 1;
-    const itemsPerPage = 3;
-    let filteredCandidates = [];
+        function calculateAge(birthday) {
+            const birthDate = new Date(birthday);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDifference = today.getMonth() - birthDate.getMonth();
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+        }
 
-    function fetchCandidates() {
-        console.log("Fetching candidates...");
-        fetch('/employer/customer/data')
-            .then(response => {
-                if (!response.ok) {
-                    console.error('Network response was not ok:', response.statusText);
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Data fetched:", data);
-                data.forEach(customer => {
-                    candidates.push({
-                        id: customer.id,
-                        name: (customer.initial || '') + 'さん',
-                        age: customer.age,
-                        gender: customer.gender,
-                        jobDescription: customer.job_description || '',
-                        salaryMin: customer.desired_salary_min,
-                        salaryMax: customer.desired_salary_max,
-                        summary: customer.catch_copy || '',
-                        details: customer.career_description || '',
-                        recommendation: customer.recommendation || '',
-                        match: customer.match_percentage
-                    });
+        window.openModal = function (id) {
+            console.log("Opening modal for candidate with ID:", id);
+            fetch(`/api/get-candidate/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    const age = calculateAge(data.birthday);
+                    document.getElementById('modal-title').textContent = '詳細情報';
+                    document.getElementById('modal-name-age-gender').textContent = `${data.initial}さん（${age}歳/${data.gender}）`;
+                    document.getElementById('modal-job-description').textContent = data.job_description;
+                    document.getElementById('modal-career-description').innerHTML = data.career_description.replace(/\n/g, '<br>');
+                    document.getElementById('modal-desired-salary').textContent = `${data.desired_salary_min}万円 - ${data.desired_salary_max}万円`;
+                    document.getElementById('modal-notable-achievements').innerHTML = data.notable_achievements.replace(/\n/g, '<br>');
+                    document.getElementById('modal-catch-copy').textContent = data.catch_copy;
+                    // document.getElementById('modal-recommendation').textContent = data.recommendation;
+                    document.getElementById('modal-num-companies-worked').textContent = data.num_companies_worked;
+                    document.getElementById('modal-work-preference').textContent = data.work_preference;
+
+                    // スキルマップを表示
+                    const skillMapContainer = document.getElementById('modal-skill-map');
+                    skillMapContainer.innerHTML = ''; // 既存の内容をクリア
+                    for (let i = 1; i <= 3; i++) {
+                        const skillDistribution = data[`skill_distribution_${i}`];
+                        const skillComment = data[`skill_comment_${i}`];
+                        if (skillDistribution && skillComment) {
+                            const skillItem = document.createElement('div');
+                            skillItem.className = 'skill-map-item';
+                            skillItem.innerHTML = `
+                                <span class="skill-map-label">${skillDistribution}</span>
+                                <span class="skill-map-description">${skillComment}</span>
+                            `;
+                            skillMapContainer.appendChild(skillItem);
+                        }
+                    }
+
+                    // プロフィール画像を設定
+                    const profilePicture = document.getElementById('profile-picture');
+                    if (data.gender === '男性') {
+                        profilePicture.src = '/photo/boy.png';
+                    } else if (data.gender === '女性') {
+                        profilePicture.src = '/photo/girl.png';
+                    } else {
+                        profilePicture.src = '/images/profile-picture.png'; // デフォルト画像
+                    }
+
+                    document.getElementById('modal').classList.add('modal-open');
+                })
+                .catch(error => {
+                    console.error('Error fetching candidate details:', error);
+                    alert('候補者の詳細を取得する際にエラーが発生しました。');
                 });
-                console.log("Candidates:", candidates);
-                filterAndDisplayCandidates();
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                document.getElementById('search-results').innerHTML = '<p>データの取得中にエラーが発生しました。サーバーの状態を確認してください。</p>';
-            });
-    }
+        }
 
-    function filterAndDisplayCandidates() {
-        const keyword = document.getElementById('keyword').value.toLowerCase();
-        const ageMin = document.getElementById('age-min').value;
-        const ageMax = document.getElementById('age-max').value;
-        const salaryMin = document.getElementById('salary-min').value;
-        const salaryMax = document.getElementById('salary-max').value;
-        const gender = document.getElementById('gender').value;
-        const jobTypes = Array.from(document.getElementById('job-types').selectedOptions).map(option => option.value);
-        const sortBy = document.getElementById('sort-by').value;
+        window.closeModal = function () {
+            document.getElementById('modal').classList.remove('modal-open');
+        }
 
-        console.log("Filtering candidates...");
-        filteredCandidates = candidates.filter(candidate => {
-            let isVisible = true;
+        document.addEventListener('DOMContentLoaded', function () {
+            const candidates = [];
+            let currentPage = 1;
+            const itemsPerPage = 3;
+            let filteredCandidates = [];
 
-            if (keyword && !(candidate.jobDescription.toLowerCase().includes(keyword) || candidate.summary.toLowerCase().includes(keyword))) {
-                isVisible = false;
+            function fetchCandidates() {
+                console.log("Fetching candidates...");
+                fetch('/employer/customer/data')
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error('Network response was not ok:', response.statusText);
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Data fetched:", data);
+                        data.forEach(customer => {
+                            candidates.push({
+                                id: customer.id,
+                                name: (customer.initial || '') + 'さん',
+                                age: calculateAge(customer.birthday), // 年齢を計算
+                                gender: customer.gender,
+                                jobDescription: customer.job_description || '',
+                                salaryMin: customer.desired_salary_min,
+                                salaryMax: customer.desired_salary_max,
+                                summary: customer.catch_copy || '',
+                                details: customer.career_description || '',
+                                recommendation: customer.recommendation || '',
+                                match: customer.match_percentage
+                            });
+                        });
+                        console.log("Candidates:", candidates);
+                        displayCandidates(); // フィルタリングは不要
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                        document.getElementById('search-results').innerHTML = '<p>データの取得中にエラーが発生しました。サーバーの状態を確認してください。</p>';
+                    });
             }
 
-            if (ageMin && candidate.age < ageMin) {
-                isVisible = false;
+            function displayCandidates() {
+                const searchResults = document.getElementById('search-results');
+                searchResults.innerHTML = '';
+
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const candidatesToDisplay = candidates.slice(startIndex, endIndex);
+
+                if (candidatesToDisplay.length === 0) {
+                    document.getElementById('no-results').classList.remove('hidden');
+                } else {
+                    document.getElementById('no-results').classList.add('hidden');
+                    candidatesToDisplay.forEach(candidate => {
+                        const card = document.createElement('div');
+                        card.className = 'bg-white shadow rounded-lg p-6 candidate-card';
+                        card.setAttribute('data-job-description', candidate.jobDescription.toLowerCase());
+                        card.setAttribute('data-age', candidate.age);
+                        card.setAttribute('data-gender', candidate.gender);
+                        card.innerHTML = `
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-2xl font-semibold">${candidate.name}</h2>
+                                <p class="text-lg text-gray-700">（${candidate.age}歳 / ${candidate.gender}）</p>
+                            </div>
+                            <p class="text-green-600 text-lg mb-4 card-text summary">${candidate.summary}</p>
+                            <div class="bg-gray-100 p-4 rounded-lg mb-4 h-fixed">
+                                <h3 class="text-xl font-semibold mb-2">職務要約</h3>
+                                <p class="text-gray-700 card-text details">${candidate.details.replace(/\n/g, '<br>')}</p>
+                            </div>
+                            <div class="bg-gray-100 p-4 rounded-lg mb-4 h-fixed-smaller">
+                                <h3 class="text-xl font-semibold mb-2">こんな企業におすすめ</h3>
+                                <p class="text-gray-700 card-text recommendation">${candidate.recommendation.replace(/\n/g, '<br>')}</p>
+                            </div>
+                            <div class="flex mb-4">
+                                <div class="bg-gray-100 p-4 rounded-lg w-1/2 mr-2">
+                                    <h3 class="text-xl font-semibold mb-2">希望年収</h3>
+                                    <p class="text-gray-700">${candidate.salaryMin}万円 - ${candidate.salaryMax}万円</p>
+                                </div>
+                                <div class="bg-gray-100 p-4 rounded-lg w-1/2 ml-2">
+                                    <h3 class="text-xl font-semibold mb-2">御社とのマッチ度</h3>
+                                    <p class="text-gray-700">${candidate.match}%</p>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <button class="btn btn-secondary" onclick="openModal('${candidate.id}')" style="background-color: #446FF2; border-color: #446FF2;">詳細を見る</button>
+                                <button class="btn btn-success" style="background-color: #ACF216; border-color: #ACF216;">紹介してもらう</button>
+                                <button class="btn btn-outline border-red-600 text-red-600 hover:bg-red-600 hover:text-white" style="border-color: #F27649; color: #F27649;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        `;
+                        searchResults.appendChild(card);
+                    });
+                }
+
+                document.getElementById('prev-page').disabled = currentPage === 1;
+                document.getElementById('next-page').disabled = currentPage === Math.ceil(candidates.length / itemsPerPage);
             }
 
-            if (ageMax && candidate.age > ageMax) {
-                isVisible = false;
-            }
+            fetchCandidates();
 
-            if (salaryMin && candidate.salaryMin < salaryMin) {
-                isVisible = false;
-            }
-
-            if (salaryMax && candidate.salaryMax > salaryMax) {
-                isVisible = false;
-            }
-
-            if (gender && candidate.gender !== gender) {
-                isVisible = false;
-            }
-
-            if (jobTypes.length > 0 && !jobTypes.includes(candidate.jobDescription)) {
-                isVisible = false;
-            }
-
-            return isVisible;
-        });
-
-        if (sortBy) {
-            filteredCandidates.sort((a, b) => {
-                if (sortBy === 'age') {
-                    return a.age - b.age;
-                } else if (sortBy === 'salary') {
-                    return a.salaryMin - b.salaryMin;
-                } else if (sortBy === 'match') {
-                    return b.match - a.match;
+            document.getElementById('prev-page').addEventListener('click', function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayCandidates();
                 }
             });
-        }
 
-        displayCandidates();
-    }
-
-    function displayCandidates() {
-        const searchResults = document.getElementById('search-results');
-        searchResults.innerHTML = '';
-
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        const candidatesToDisplay = filteredCandidates.slice(startIndex, endIndex);
-
-        if (candidatesToDisplay.length === 0) {
-            document.getElementById('no-results').classList.remove('hidden');
-        } else {
-            document.getElementById('no-results').classList.add('hidden');
-            candidatesToDisplay.forEach(candidate => {
-                const card = document.createElement('div');
-                card.className = 'bg-white shadow rounded-lg p-6 candidate-card';
-                card.setAttribute('data-job-description', candidate.jobDescription.toLowerCase());
-                card.setAttribute('data-age', candidate.age);
-                card.setAttribute('data-gender', candidate.gender);
-                card.innerHTML = `
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-2xl font-semibold">${candidate.name}</h2>
-                        <p class="text-lg text-gray-700">（${candidate.age}歳 / ${candidate.gender}）</p>
-                    </div>
-                    <p class="text-green-600 text-lg mb-4 card-text summary">${candidate.summary}</p>
-                    <div class="bg-gray-100 p-4 rounded-lg mb-4 h-fixed">
-                        <h3 class="text-xl font-semibold mb-2">職務要約</h3>
-                        <p class="text-gray-700 card-text details">${candidate.details}</p>
-                    </div>
-                    <div class="bg-gray-100 p-4 rounded-lg mb-4 h-fixed-smaller">
-                        <h3 class="text-xl font-semibold mb-2">こんな企業におすすめ</h3>
-                        <p class="text-gray-700 card-text recommendation">${candidate.recommendation}</p>
-                    </div>
-                    <div class="flex mb-4">
-                        <div class="bg-gray-100 p-4 rounded-lg w-1/2 mr-2">
-                            <h3 class="text-xl font-semibold mb-2">希望年収</h3>
-                            <p class="text-gray-700">${candidate.salaryMin}万円 - ${candidate.salaryMax}万円</p>
-                        </div>
-                        <div class="bg-gray-100 p-4 rounded-lg w-1/2 ml-2">
-                            <h3 class="text-xl font-semibold mb-2">御社とのマッチ度</h3>
-                            <p class="text-gray-700">${candidate.match}%</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <button class="btn btn-secondary" onclick="openModal('${candidate.id}')" style="background-color: #446FF2; border-color: #446FF2;">詳細を見る</button>
-                        <button class="btn btn-success" style="background-color: #ACF216; border-color: #ACF216;">紹介してもらう</button>
-                        <button class="btn btn-outline border-red-600 text-red-600 hover:bg-red-600 hover:text-white" style="border-color: #F27649; color: #F27649;">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                        </button>
-                    </div>
-                `;
-                searchResults.appendChild(card);
+            document.getElementById('next-page').addEventListener('click', function () {
+                if (currentPage < Math.ceil(candidates.length / itemsPerPage)) {
+                    currentPage++;
+                    displayCandidates();
+                }
             });
-        }
-
-        document.getElementById('prev-page').disabled = currentPage === 1;
-        document.getElementById('next-page').disabled = currentPage === Math.ceil(filteredCandidates.length / itemsPerPage);
-    }
-
-    window.openModal = function (id) {
-        console.log("Opening modal for candidate with ID:", id);
-        fetch(`/api/get-candidate/${id}`)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('modal-name').textContent = `${data.initial}さん（${data.age}歳/${data.gender}）の詳細情報`;
-                document.getElementById('modal-details').innerHTML = `
-                <p>${data.catch_copy}</p>
-                    <p>職務要約: ${data.career_description}</p>
-                    <p>希望年収: ${data.desired_salary_min}万円 - ${data.desired_salary_max}万円</p>                
-                    <p>経験企業数: ${data.num_companies_worked}</p>
-                    <p>スキル配分: ${data.skill_distribution}</p>
-                    <p>過去実績: ${data.notable_achievements}</p>
-                `;
-                document.getElementById('modal').classList.add('modal-open');
-            })
-            .catch(error => {
-                console.error('Error fetching candidate details:', error);
-                alert('候補者の詳細を取得する際にエラーが発生しました。');
-            });
-    }
-
-    window.closeModal = function () {
-        document.getElementById('modal').classList.remove('modal-open');
-    }
-
-    document.getElementById('search-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        console.log("Search form submitted");
-        currentPage = 1;
-        filterAndDisplayCandidates();
-    });
-
-    document.getElementById('prev-page').addEventListener('click', function () {
-        if (currentPage > 1) {
-            currentPage--;
-            displayCandidates();
-        }
-    });
-
-    document.getElementById('next-page').addEventListener('click', function () {
-        if (currentPage < Math.ceil(filteredCandidates.length / itemsPerPage)) {
-            currentPage++;
-            displayCandidates();
-        }
-    });
-
-    fetchCandidates();
-});
+        });
     </script>
 @endsection

@@ -13,20 +13,31 @@ class CustomerUser extends Model
 
     protected $fillable = [
         'name',
-        'position',
-        'status',
-        'matching',
-        'created_at',
-        'age',
+        'initial',
+        'birthday',
         'gender',
-        'desired_salary_min',
-        'desired_salary_max',
+        'position',
         'catch_copy',
         'career_description',
-        'num_companies_worked',
-        'skill_distribution',
-        'notable_achievements',
         'recommendation',
-        'initial' // 新しいフィールドを追加
+        'desired_salary_min',
+        'desired_salary_max',
+        'skill_distribution',
+        'skill_distribution_1',
+        'skill_distribution_2',
+        'skill_distribution_3',
+        'skill_comment_1',
+        'skill_comment_2',
+        'skill_comment_3',
+        'num_companies_worked',
+        'work_preference',
+        'notable_achievements',
+        'status',
+        'matching',
+        'created_at'
+    ];
+
+    protected $casts = [
+        'work_preference' => 'array',
     ];
 }

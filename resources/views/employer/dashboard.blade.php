@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -7,7 +7,13 @@
     <title>採用企業 ダッシュボード</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
+</head> --}}
+
+@extends('employer.layouts.app')
+
+@section('title', '採用企業 ダッシュボード')
+
+@section('content')
 
 <!-- ========== HEADER ========== -->
 <header class="sticky top-0 inset-x-0 flex flex-wrap sm:justify-start sm:flex-nowrap z-[48] w-full bg-white border-b text-sm py-2.5 sm:py-4 lg:ps-64">

@@ -30,23 +30,31 @@ class AgentCustomerController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
-            'status' => 'required|string|max:255',
-            'matching' => 'required|integer|min:0|max:5',
-            'created_at' => 'required|date',
-            'age' => 'nullable|integer',
+            'status' => 'nullable|string|max:255',
+            'birthday' => 'nullable|date',
             'gender' => 'nullable|string|max:255',
             'desired_salary_min' => 'nullable|integer',
             'desired_salary_max' => 'nullable|integer',
             'catch_copy' => 'nullable|string|max:60',
             'career_description' => 'nullable|string|max:250',
             'num_companies_worked' => 'nullable|integer',
-            'skill_distribution' => 'nullable|json',
+            'work_preference' => 'nullable|array',
+            'skill_distribution_1' => 'nullable|string|max:255',
+            'skill_distribution_2' => 'nullable|string|max:255',
+            'skill_distribution_3' => 'nullable|string|max:255',
+            'skill_comment_1' => 'nullable|string|max:100',
+            'skill_comment_2' => 'nullable|string|max:100',
+            'skill_comment_3' => 'nullable|string|max:100',
             'notable_achievements' => 'nullable|string',
             'recommendation' => 'nullable|string',
-            'initial' => 'nullable|string' // 新しいフィールドのバリデーション
+            'initial' => 'nullable|string|max:255'
         ]);
 
-        CustomerUser::create($request->all());
+        $data = $request->all();
+        $data['work_preference'] = json_encode($request->input('work_preference', []));
+        $data['status'] = $request->input('status', 'pending');
+
+        CustomerUser::create($data);
 
         return redirect()->route('agent.customer.index');
     }
@@ -62,24 +70,34 @@ class AgentCustomerController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
-            'status' => 'required|string|max:255',
-            'matching' => 'required|integer|min:0|max:5',
-            'created_at' => 'required|date',
-            'age' => 'nullable|integer',
+            'status' => 'nullable|string|max:255',
+            'birthday' => 'nullable|date',
             'gender' => 'nullable|string|max:255',
             'desired_salary_min' => 'nullable|integer',
             'desired_salary_max' => 'nullable|integer',
             'catch_copy' => 'nullable|string|max:60',
             'career_description' => 'nullable|string|max:250',
             'num_companies_worked' => 'nullable|integer',
-            'skill_distribution' => 'nullable|json',
+            'work_preference' => 'nullable|array',
+            'skill_distribution_1' => 'nullable|string|max:255',
+            'skill_distribution_2' => 'nullable|string|max:255',
+            'skill_distribution_3' => 'nullable|string|max:255',
+            'skill_comment_1' => 'nullable|string|max:100',
+            'skill_comment_2' => 'nullable|string|max:100',
+            'skill_comment_3' => 'nullable|string|max:100',
             'notable_achievements' => 'nullable|string',
             'recommendation' => 'nullable|string',
-            'initial' => 'nullable|string' // 新しいフィールドのバリデーション
+            'initial' => 'nullable|string|max:255'
+
+
         ]);
 
+        $data = $request->all();
+        $data['work_preference'] = json_encode($request->input('work_preference', []));
+        $data['status'] = $request->input('status', 'pending');
+
         $user = CustomerUser::findOrFail($id);
-        $user->update($request->all());
+        $user->update($data);
 
         return redirect()->route('agent.customer.index');
     }
