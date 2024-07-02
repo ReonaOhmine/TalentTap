@@ -11,6 +11,9 @@ use App\Http\Controllers\Employer\CustomerController;
 use App\Http\Controllers\Agent\ProfileController as AgentProfileController;
 use App\Http\Controllers\Employer\ProfileController as EmployerProfileController;
 
+
+
+
 // ウェルカムページ
 Route::get('/', function () {
     return view('welcome');
@@ -31,6 +34,14 @@ Route::post('/agent/signup', [AgentSignupController::class, 'store']);
 Route::get('/agent/login', [AgentLoginController::class, 'create'])->name('agent.login');
 // エージェントログイン処理
 Route::post('/agent/login', [AgentLoginController::class, 'store']);
+
+// エージェントのマイページ表示
+Route::middleware('auth:agent')->group(function () {
+    Route::get('/agent/profile', [AgentProfileController::class, 'show'])->name('agent.profile');
+    Route::get('/agent/profile/edit', [AgentProfileController::class, 'edit'])->name('agent.profile.edit');
+    Route::patch('/agent/profile', [AgentProfileController::class, 'update'])->name('agent.profile.update');
+});
+
 
 // 支援中ユーザーの表示
 Route::get('/agent/customer/index', [AgentCustomerController::class, 'index'])->name('agent.customer.index');
