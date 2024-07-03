@@ -11,9 +11,6 @@ use App\Http\Controllers\Employer\CustomerController;
 use App\Http\Controllers\Agent\ProfileController as AgentProfileController;
 use App\Http\Controllers\Employer\ProfileController as EmployerProfileController;
 
-
-
-
 // ウェルカムページ
 Route::get('/', function () {
     return view('welcome');
@@ -42,7 +39,6 @@ Route::middleware('auth:agent')->group(function () {
     Route::patch('/agent/profile', [AgentProfileController::class, 'update'])->name('agent.profile.update');
 });
 
-
 // 支援中ユーザーの表示
 Route::get('/agent/customer/index', [AgentCustomerController::class, 'index'])->name('agent.customer.index');
 
@@ -55,6 +51,9 @@ Route::post('/agent/customer/store', [AgentCustomerController::class, 'store'])-
 Route::get('/agent/customer/edit/{id}', [AgentCustomerController::class, 'edit'])->name('agent.customer.edit');
 // 支援中ユーザーの更新処理
 Route::patch('/agent/customer/update/{id}', [AgentCustomerController::class, 'update'])->name('agent.customer.update');
+
+// メッセージページの表示
+Route::get('/agent/message', [MessagesController::class, 'show'])->name('agent.message');
 
 //*************利用企業関連*************//
 // 利用企業ダッシュボードページの表示
