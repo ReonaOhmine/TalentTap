@@ -83,7 +83,12 @@ Route::middleware('auth:employer')->group(function () {
 // 利用企業候補者検索ページの表示
 Route::get('/employer/customer/search', function () {
     return view('employer.customer.search');
-});
+})->name('employer.customer.search');
+
+// メッセージページの表示
+Route::get('/employer/message', function () {
+    return view('employer.message');
+})->name('employer.message');
 
 // 候補者データを取得するためのルートを追加
 Route::get('/employer/customer/data', [CustomerController::class, 'getCustomerData'])->name('employer.customer.data');
