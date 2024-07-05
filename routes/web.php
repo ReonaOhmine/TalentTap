@@ -53,7 +53,7 @@ Route::get('/agent/customer/edit/{id}', [AgentCustomerController::class, 'edit']
 Route::patch('/agent/customer/update/{id}', [AgentCustomerController::class, 'update'])->name('agent.customer.update');
 
 // メッセージページの表示
-Route::get('/agent/message', [MessagesController::class, 'show'])->name('agent.message');
+// Route::get('/agent/message', [MessagesController::class, 'show'])->name('agent.message');
 
 //*************利用企業関連*************//
 // 利用企業ダッシュボードページの表示
@@ -86,9 +86,9 @@ Route::get('/employer/customer/search', function () {
 })->name('employer.customer.search');
 
 // メッセージページの表示
-Route::get('/employer/message', function () {
-    return view('employer.message');
-})->name('employer.message');
+// Route::get('/employer/message', function () {
+//     return view('employer.message');
+// })->name('employer.message');
 
 // 候補者データを取得するためのルートを追加
 Route::get('/employer/customer/data', [CustomerController::class, 'getCustomerData'])->name('employer.customer.data');
