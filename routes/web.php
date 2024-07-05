@@ -5,11 +5,12 @@ use App\Http\Controllers\Agent\Auth\LoginController as AgentLoginController;
 use App\Http\Controllers\Agent\Auth\SignupController as AgentSignupController;
 use App\Http\Controllers\Employer\Auth\LoginController as EmployerLoginController;
 use App\Http\Controllers\Employer\Auth\SignupController as EmployerSignupController;
-use App\Http\Controllers\AgentCustomerController;
-use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\Employer\CustomerController;
 use App\Http\Controllers\Agent\ProfileController as AgentProfileController;
+use App\Http\Controllers\AgentCustomerController;
 use App\Http\Controllers\Employer\ProfileController as EmployerProfileController;
+use App\Events\ExampleEvent;
+use App\Http\Controllers\MessagesController;
 
 // ウェルカムページ
 Route::get('/', function () {
@@ -52,8 +53,13 @@ Route::get('/agent/customer/edit/{id}', [AgentCustomerController::class, 'edit']
 // 支援中ユーザーの更新処理
 Route::patch('/agent/customer/update/{id}', [AgentCustomerController::class, 'update'])->name('agent.customer.update');
 
-// メッセージページの表示
-// Route::get('/agent/message', [MessagesController::class, 'show'])->name('agent.message');
+
+// エージェントのメッセージ関連
+Route::middleware('auth:agent')->group(function () {
+    Route::get('/agent/messages', [MessagesController::class, 'agentIndex'])->name('agent.messages.index');
+    Route::post('/agent/messages', [MessagesController::class, 'agentSendMessage'])->name('agent.messages.send');
+});
+
 
 //*************利用企業関連*************//
 // 利用企業ダッシュボードページの表示
@@ -85,11 +91,24 @@ Route::get('/employer/customer/search', function () {
     return view('employer.customer.search');
 })->name('employer.customer.search');
 
-// メッセージページの表示
-// Route::get('/employer/message', function () {
-//     return view('employer.message');
-// })->name('employer.message');
-
 // 候補者データを取得するためのルートを追加
 Route::get('/employer/customer/data', [CustomerController::class, 'getCustomerData'])->name('employer.customer.data');
 Route::get('/api/get-candidate/{id}', [AgentCustomerController::class, 'getCandidate']);
+
+// ログインルートの定義
+Route::get('login', function () {
+    // ログインページへのリダイレクト
+    return view('auth.login');
+})->name('login');
+
+
+// 利用企業のメッセージ関連
+Route::middleware('auth:employer')->group(function () {
+    Route::get('/employer/messages', [MessagesController::class, 'employerIndex'])->name('employer.messages.index');
+    Route::post('/employer/messages', [MessagesController::class, 'employerSendMessage'])->name('employer.messages.send');
+});
+
+// Route::get('/send', function () {
+//     broadcast(new ExampleEvent('Hello Pusher!'));
+//     return 'Event has been sent!';
+// });
