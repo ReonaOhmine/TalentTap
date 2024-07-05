@@ -16,30 +16,42 @@ class MessagesController extends Controller
         $this->middleware('auth:agent,employer');
     }
 
-    public function agentIndex()
+    public function agentIndex(Request $request)
     {
         $user = auth()->guard('agent')->user();
-        $messages = Message::where(function ($query) use ($user) {
+        $receiver_id = $request->get('receiver_id');
+
+        $messages = Message::where(function ($query) use ($user, $receiver_id) {
             $query->where('sender_id', $user->id)
-                ->where('sender_type', Agent::class);
-        })->orWhere(function ($query) use ($user) {
-            $query->where('receiver_id', $user->id)
+                ->where('sender_type', Agent::class)
+                ->where('receiver_id', $receiver_id)
                 ->where('receiver_type', EmployerUser::class);
+        })->orWhere(function ($query) use ($user, $receiver_id) {
+            $query->where('receiver_id', $user->id)
+                ->where('receiver_type', Agent::class)
+                ->where('sender_id', $receiver_id)
+                ->where('sender_type', EmployerUser::class);
         })->get();
 
         $users = EmployerUser::all();
         return view('agent.messages', compact('messages', 'users'));
     }
 
-    public function employerIndex()
+    public function employerIndex(Request $request)
     {
         $user = auth()->guard('employer')->user();
-        $messages = Message::where(function ($query) use ($user) {
+        $receiver_id = $request->get('receiver_id');
+
+        $messages = Message::where(function ($query) use ($user, $receiver_id) {
             $query->where('sender_id', $user->id)
-                ->where('sender_type', EmployerUser::class);
-        })->orWhere(function ($query) use ($user) {
-            $query->where('receiver_id', $user->id)
+                ->where('sender_type', EmployerUser::class)
+                ->where('receiver_id', $receiver_id)
                 ->where('receiver_type', Agent::class);
+        })->orWhere(function ($query) use ($user, $receiver_id) {
+            $query->where('receiver_id', $user->id)
+                ->where('receiver_type', EmployerUser::class)
+                ->where('sender_id', $receiver_id)
+                ->where('sender_type', Agent::class);
         })->get();
 
         $users = Agent::all();
@@ -66,7 +78,7 @@ class MessagesController extends Controller
 
         $this->broadcastMessage($message);
 
-        return response()->json(['status' => 'Message Sent!']);
+        return redirect()->route('agent.messages.index', ['receiver_id' => $receiver->id]);
     }
 
     public function employerSendMessage(Request $request)
@@ -89,7 +101,7 @@ class MessagesController extends Controller
 
         $this->broadcastMessage($message);
 
-        return response()->json(['status' => 'Message Sent!']);
+        return redirect()->route('employer.messages.index', ['receiver_id' => $receiver->id]);
     }
 
     protected function broadcastMessage($message)
