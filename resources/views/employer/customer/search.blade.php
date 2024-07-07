@@ -43,7 +43,6 @@
                     </div>
                 </div>
                 <div class="mt-4">
-                    {{-- <h4 class="font-bold text-md mb-2">キャッチコピー</h4> --}}
                     <p class="text-lg font-bold text-blue-700" id="modal-catch-copy"></p>
                 </div>
                 <div class="mt-4">
@@ -58,10 +57,6 @@
                     <h4 class="font-bold text-md mb-2">過去実績</h4>
                     <p class="text-gray-700" id="modal-notable-achievements"></p>
                 </div>
-                {{-- <div class="mt-4">
-                    <h4 class="font-bold text-md mb-2">推奨事項</h4>
-                    <p class="text-gray-700" id="modal-recommendation"></p>
-                </div> --}}
                 <div class="mt-4">
                     <h4 class="font-bold text-md mb-2">希望年収</h4>
                     <p class="text-gray-700" id="modal-desired-salary"></p>
@@ -73,6 +68,17 @@
             </div>
             <div class="modal-action">
                 <button class="btn" onclick="closeModal()">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新しいポップアップモーダル -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">この候補者の希望年収、働き方のを希望を確認しましたか？</h3>
+            <div class="modal-action">
+                <button id="confirm-yes" class="btn btn-primary">はい、紹介希望のメッセージをします</button>
+                <button id="confirm-no" class="btn">いいえ、戻って確認します</button>
             </div>
         </div>
     </div>
@@ -102,7 +108,7 @@
         }
 
         .modal {
-            display: none; /* 初期状態で非表示 */
+            display: none;
         }
 
         .modal-open {
@@ -124,38 +130,6 @@
             border-radius: 8px;
             padding: 16px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .modal-box img {
-            width: 100%;
-        }
-
-        .modal-box .flex {
-            display: flex;
-        }
-
-        .modal-box .flex .w-24 {
-            width: 6rem;
-        }
-
-        .modal-box .flex .ml-4 {
-            margin-left: 1rem;
-        }
-
-        .modal-box .mt-4 {
-            margin-top: 1rem;
-        }
-
-        .modal-box .text-md {
-            font-size: 1.125rem;
-        }
-
-        .modal-box .font-bold {
-            font-weight: bold;
-        }
-
-        .modal-box .text-gray-700 {
-            color: #4a5568;
         }
 
         .skill-map-item {
@@ -203,13 +177,11 @@
                     document.getElementById('modal-desired-salary').textContent = `${data.desired_salary_min}万円 - ${data.desired_salary_max}万円`;
                     document.getElementById('modal-notable-achievements').innerHTML = data.notable_achievements.replace(/\n/g, '<br>');
                     document.getElementById('modal-catch-copy').textContent = data.catch_copy;
-                    // document.getElementById('modal-recommendation').textContent = data.recommendation;
                     document.getElementById('modal-num-companies-worked').textContent = data.num_companies_worked;
                     document.getElementById('modal-work-preference').textContent = data.work_preference;
 
-                    // スキルマップを表示
                     const skillMapContainer = document.getElementById('modal-skill-map');
-                    skillMapContainer.innerHTML = ''; // 既存の内容をクリア
+                    skillMapContainer.innerHTML = '';
                     for (let i = 1; i <= 3; i++) {
                         const skillDistribution = data[`skill_distribution_${i}`];
                         const skillComment = data[`skill_comment_${i}`];
@@ -224,14 +196,13 @@
                         }
                     }
 
-                    // プロフィール画像を設定
                     const profilePicture = document.getElementById('profile-picture');
                     if (data.gender === '男性') {
                         profilePicture.src = '/photo/boy.png';
                     } else if (data.gender === '女性') {
                         profilePicture.src = '/photo/girl.png';
                     } else {
-                        profilePicture.src = '/images/profile-picture.png'; // デフォルト画像
+                        profilePicture.src = '/images/profile-picture.png';
                     }
 
                     document.getElementById('modal').classList.add('modal-open');
@@ -246,11 +217,24 @@
             document.getElementById('modal').classList.remove('modal-open');
         }
 
+        window.openConfirmationModal = function(candidateId, agentId) {
+            const confirmationModal = document.getElementById('confirmation-modal');
+            confirmationModal.classList.add('modal-open');
+
+            document.getElementById('confirm-yes').onclick = function() {
+                window.location.href = `/employer/messages?receiver_id=${agentId}`;
+            }
+
+            document.getElementById('confirm-no').onclick = function() {
+                confirmationModal.classList.remove('modal-open');
+                window.location.href = '/employer/customer/search';
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const candidates = [];
             let currentPage = 1;
             const itemsPerPage = 3;
-            let filteredCandidates = [];
 
             function fetchCandidates() {
                 console.log("Fetching candidates...");
@@ -268,7 +252,7 @@
                             candidates.push({
                                 id: customer.id,
                                 name: (customer.initial || '') + 'さん',
-                                age: calculateAge(customer.birthday), // 年齢を計算
+                                age: calculateAge(customer.birthday),
                                 gender: customer.gender,
                                 jobDescription: customer.job_description || '',
                                 salaryMin: customer.desired_salary_min,
@@ -276,11 +260,12 @@
                                 summary: customer.catch_copy || '',
                                 details: customer.career_description || '',
                                 recommendation: customer.recommendation || '',
-                                match: customer.match_percentage
+                                match: customer.match_percentage,
+                                agentId: customer.agent_id // エージェントIDを追加
                             });
                         });
                         console.log("Candidates:", candidates);
-                        displayCandidates(); // フィルタリングは不要
+                        displayCandidates();
                     })
                     .catch(error => {
                         console.error('Error fetching data:', error);
@@ -332,7 +317,7 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <button class="btn btn-secondary" onclick="openModal('${candidate.id}')" style="background-color: #446FF2; border-color: #446FF2;">詳細を見る</button>
-                                <button class="btn btn-success" style="background-color: #ACF216; border-color: #ACF216;">紹介してもらう</button>
+                                <button class="btn btn-success" style="background-color: #ACF216; border-color: #ACF216;" onclick="openConfirmationModal('${candidate.id}', '${candidate.agentId}')">紹介してもらう</button>
                                 <button class="btn btn-outline border-red-600 text-red-600 hover:bg-red-600 hover:text-white" style="border-color: #F27649; color: #F27649;">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
