@@ -13,7 +13,7 @@
 <div class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm">
   <div class="p-4 sm:p-7">
     <div class="text-center">
-      <h1 class="block text-2xl font-bold text-gray-800">Sign in</h1>
+      <h1 class="block text-2xl font-bold text-gray-800">エージェント Sign in</h1>
       <p class="mt-2 text-sm text-gray-600">
         Don't have an account yet?
         <a class="text-blue-600 decoration-2 hover:underline font-medium" href="{{ route('agent.signup') }}">
