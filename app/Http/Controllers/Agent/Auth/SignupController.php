@@ -32,14 +32,13 @@ class SignupController extends Controller
         }
 
         $validated = $validator->validated();
-        $validated['password'] = Hash::make($validated['password']);
+        $validated['password'] = Hash::make($validated['password']); // パスワードのハッシュ化
 
-        Log::info('Validated Data:', $validated); // デバッグ用ログ出力
+        // デバッグログの追加
+        Log::info('Request Data:', $request->all());
+        Log::info('Validated Data:', $validated);
 
         $agent = Agent::create($validated);
-
-        // ログインさせたい場合
-        // Auth::login($agent);
 
         return redirect()->route('agent.login')->with('status', '会員登録が完了しました。ログインしましょう');
     }
