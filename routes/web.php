@@ -10,6 +10,7 @@ use App\Http\Controllers\Agent\ProfileController as AgentProfileController;
 use App\Http\Controllers\AgentCustomerController;
 use App\Http\Controllers\Employer\ProfileController as EmployerProfileController;
 use App\Events\ExampleEvent;
+use App\Http\Controllers\Agent\DashboardController;
 use App\Http\Controllers\MessagesController;
 
 // ウェルカムページ
@@ -19,9 +20,9 @@ Route::get('/', function () {
 
 //*************エージェント関連*************//
 // エージェントダッシュボードページの表示
-Route::get('/agent/dashboard', function () {
-    return view('agent.dashboard');
-})->middleware('auth:agent')->name('agent.dashboard');
+Route::get('/agent/dashboard', [DashboardController::class, 'index'])
+->middleware('auth:agent')
+->name('agent.dashboard');
 
 // エージェント登録ページの表示
 Route::get('/agent/signup', [AgentSignupController::class, 'create'])->name('agent.signup');
@@ -42,7 +43,6 @@ Route::middleware('auth:agent')->group(function () {
 
 // 支援中ユーザーの表示
 Route::get('/agent/customer/index', [AgentCustomerController::class, 'index'])->name('agent.customer.index');
-
 // 支援中ユーザーの登録画面の表示
 Route::get('/agent/customer/create', [AgentCustomerController::class, 'create'])->name('agent.customer.create');
 // 支援中ユーザーの登録処理

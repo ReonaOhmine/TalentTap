@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CustomerUser;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AgentCustomerController extends Controller
 {
     public function index()
     {
-        $users = CustomerUser::all();
+        $agentId = Auth::guard('agent')->id();
+        $users = CustomerUser::where('agent_id', $agentId)->get();
         return view('agent.customer.index', compact('users'));
     }
 
@@ -53,6 +55,7 @@ class AgentCustomerController extends Controller
         $data = $request->all();
         $data['work_preference'] = json_encode($request->input('work_preference', []));
         $data['status'] = $request->input('status', 'pending');
+        $data['agent_id'] = Auth::guard('agent')->id(); // ここでエージェントIDを追加
 
         CustomerUser::create($data);
 
@@ -88,8 +91,6 @@ class AgentCustomerController extends Controller
             'notable_achievements' => 'nullable|string',
             'recommendation' => 'nullable|string',
             'initial' => 'nullable|string|max:255'
-
-
         ]);
 
         $data = $request->all();
