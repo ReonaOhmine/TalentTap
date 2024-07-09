@@ -304,6 +304,73 @@
 </div>
 <!-- End Sidebar -->
 
+<div class="w-full lg:ps-64">
+  <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+    <!-- Grid -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <!-- ユーザー登録数 -->
+      <div class="flex flex-col bg-white border shadow-sm rounded-xl">
+        <div class="p-4 md:p-5">
+          <div class="flex items-center gap-x-2">
+            <p class="text-xs uppercase tracking-wide text-gray-500">会いたい送信数</p>
+          </div>
+          <div class="mt-1 flex items-center gap-x-2">
+            <h3 class="text-xl sm:text-2xl font-medium text-gray-800">30</h3>
+          </div>
+        </div>
+      </div>
+      <!-- ユーザー面談数 -->
+      <div class="flex flex-col bg-white border shadow-sm rounded-xl">
+        <div class="p-4 md:p-5">
+          <div class="flex items-center gap-x-2">
+            <p class="text-xs uppercase tracking-wide text-gray-500">面談数</p>
+          </div>
+          <div class="mt-1 flex items-center gap-x-2">
+            <h3 class="text-xl sm:text-2xl font-medium text-gray-800">15</h3>
+          </div>
+        </div>
+      </div>
+      <!-- 内定数 -->
+      <div class="flex flex-col bg-white border shadow-sm rounded-xl">
+        <div class="p-4 md:p-5">
+          <div class="flex items-center gap-x-2">
+            <p class="text-xs uppercase tracking-wide text-gray-500">内定数</p>
+          </div>
+          <div class="mt-1 flex items-center gap-x-2">
+            <h3 class="text-xl sm:text-2xl font-medium text-gray-800">5</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 推移率グリッド -->
+    <div class="grid lg:grid-cols-2 gap-4 sm:gap-6 mt-6">
+      <!-- ユーザー登録数→ユーザー面談数の推移率 -->
+      <div class="flex flex-col bg-white border shadow-sm rounded-xl">
+        <div class="p-4 md:p-5">
+          <div class="flex items-center gap-x-2">
+            <p class="text-xs uppercase tracking-wide text-gray-500">会いたい送信数→面談数の推移率</p>
+          </div>
+          <div class="mt-1 flex items-center gap-x-2">
+            <h3 class="text-xl sm:text-2xl font-medium text-gray-800">30%</h3>
+          </div>
+        </div>
+      </div>
+      <!-- ユーザー面談数→内定数の推移率 -->
+      <div class="flex flex-col bg-white border shadow-sm rounded-xl">
+        <div class="p-4 md:p-5">
+          <div class="flex items-center gap-x-2">
+            <p class="text-xs uppercase tracking-wide text-gray-500">面談数→内定数の推移率</p>
+          </div>
+          <div class="mt-1 flex items-center gap-x-2">
+            <h3 class="text-xl sm:text-2xl font-medium text-gray-800">30%</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- Content -->
 <div class="w-full lg:ps-64">
   <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
