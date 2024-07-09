@@ -24,6 +24,7 @@ class EmployerUser extends Authenticatable
         'tel',
         'hp_url',
         'logo_image',
+        'password',  // ここに追加
     ];
 
     /**
