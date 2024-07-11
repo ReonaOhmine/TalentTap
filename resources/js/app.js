@@ -29,3 +29,26 @@ window.Echo.channel('example-channel')
     .listen('ExampleEvent', (e) => {
         console.log(e.message);
     });
+
+// WebSocket接続のコードを追加
+const socket = new WebSocket('wss://freddy.sakura.ne.jp/TalentTap/TalentTap/agent/login/ws');
+
+socket.onopen = () => {
+  console.log('WebSocket connection established');
+};
+
+socket.onerror = (error) => {
+  console.error('WebSocket error:', error);
+};
+
+socket.onmessage = (event) => {
+  console.log('Message from server:', event.data);
+};
+
+socket.onclose = (event) => {
+  if (event.wasClean) {
+    console.log('WebSocket connection closed cleanly');
+  } else {
+    console.error('WebSocket connection closed with error', event);
+  }
+};
