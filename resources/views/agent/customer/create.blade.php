@@ -14,7 +14,7 @@
       </select>
     </div>
 
-        <!-- バリデーションエラーの表示 -->
+    <!-- バリデーションエラーの表示 -->
     @if ($errors->any())
       <div class="alert alert-danger">
         <ul>
@@ -78,10 +78,44 @@
 ・CRMやSFAなどの業務改善ツール導入を検討している/導入しているが上手く使いこなせていない"></textarea>
         </div>
         <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-
-
-
-          <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div>
+            <label for="skill_distribution_1" class="block mb-2 text-sm font-medium text-gray-900">特筆スキル①</label>
+            <select id="skill_distribution_1" name="skill_distribution_1" class="block w-full p-2.5 border border-gray-300 rounded-lg shadow-sm">
+              <option value="AAA">AAA</option>
+              <option value="BBB">BBB</option>
+              <option value="CCC">CCC</option>
+              <option value="DDD">DDD</option>
+              <option value="EEE">EEE</option>
+            </select>
+            <label for="skill_comment_1" class="block mt-2 mb-2 text-sm font-medium text-gray-900">特筆スキルコメント①</label>
+            <textarea id="skill_comment_1" name="skill_comment_1" class="block w-full p-2.5 border border-gray-300 rounded-lg shadow-sm" maxlength="100" rows="2"></textarea>
+          </div>
+          <div>
+            <label for="skill_distribution_2" class="block mb-2 text-sm font-medium text-gray-900">特筆スキル②</label>
+            <select id="skill_distribution_2" name="skill_distribution_2" class="block w-full p-2.5 border border-gray-300 rounded-lg shadow-sm">
+              <option value="AAA">AAA</option>
+              <option value="BBB">BBB</option>
+              <option value="CCC">CCC</option>
+              <option value="DDD">DDD</option>
+              <option value="EEE">EEE</option>
+            </select>
+            <label for="skill_comment_2" class="block mt-2 mb-2 text-sm font-medium text-gray-900">特筆スキルコメント②</label>
+            <textarea id="skill_comment_2" name="skill_comment_2" class="block w-full p-2.5 border border-gray-300 rounded-lg shadow-sm" maxlength="100" rows="2"></textarea>
+          </div>
+          <div>
+            <label for="skill_distribution_3" class="block mb-2 text-sm font-medium text-gray-900">特筆スキル③</label>
+            <select id="skill_distribution_3" name="skill_distribution_3" class="block w-full p-2.5 border border-gray-300 rounded-lg shadow-sm">
+              <option value="AAA">AAA</option>
+              <option value="BBB">BBB</option>
+              <option value="CCC">CCC</option>
+              <option value="DDD">DDD</option>
+              <option value="EEE">EEE</option>
+            </select>
+            <label for="skill_comment_3" class="block mt-2 mb-2 text-sm font-medium text-gray-900">特筆スキルコメント③</label>
+            <textarea id="skill_comment_3" name="skill_comment_3" class="block w-full p-2.5 border border-gray-300 rounded-lg shadow-sm" maxlength="100" rows="2"></textarea>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
             <label for="desired_salary_min" class="block mb-2 text-sm font-medium text-gray-900">希望年収（下限）</label>
             <select id="desired_salary_min" name="desired_salary_min" class="block w-full p-2.5 border border-gray-300 rounded-lg shadow-sm">
@@ -103,26 +137,25 @@
           <label for="work_preference" class="block mb-2 text-sm font-medium text-gray-900">希望の働き方</label>
           <div class="block w-full p-2.5 border border-gray-300 rounded-lg shadow-sm h-24 overflow-y-scroll">
             <label class="block mb-2">
-              <input type="checkbox" id="work_preference_remote" name="work_preference[]" value="リモートワーク"> リモートワーク
+              <input type="checkbox" name="work_preference[]" value="リモートワーク"> リモートワーク
             </label>
             <label class="block mb-2">
-              <input type="checkbox" id="work_preference_flextime" name="work_preference[]" value="フレックスタイム"> フレックスタイム
+              <input type="checkbox" name="work_preference[]" value="フレックスタイム"> フレックスタイム
             </label>
             <label class="block mb-2">
-              <input type="checkbox" id="work_preference_three_day_weekend" name="work_preference[]" value="週休三日制"> 週休三日制
+              <input type="checkbox" name="work_preference[]" value="週休三日制"> 週休三日制
             </label>
             <label class="block mb-2">
-              <input type="checkbox" id="work_preference_short_hours" name="work_preference[]" value="時短勤務"> 時短勤務
+              <input type="checkbox" name="work_preference[]" value="時短勤務"> 時短勤務
             </label>
             <label class="block mb-2">
-              <input type="checkbox" id="work_preference_side_job" name="work_preference[]" value="副業可"> 副業可
+              <input type="checkbox" name="work_preference[]" value="副業可"> 副業可
             </label>
           </div>
         </div>
         <div>
           <label for="notable_achievements" class="block mb-2 text-sm font-medium text-gray-900">主な実績</label>
-          <textarea id="notable_achievements" name="notable_achievements" class="block w-full p-2.5 border border-gray-300 rounded-lg shadow-sm" placeholder="・東急不動産での事業責任者としてプロジェクトを立ち上げ、月次売上2000万へと成長させる
-・CRM、MAを用いた事業効率化に貢献しており、業務委託・兼業メンバー6名（セールスは1名のみ）で上記プロジェクト運営させるなど体制づくりも得意とする"></textarea>
+          <textarea id="notable_achievements" name="notable_achievements" class="block w-full p-2.5 border border-gray-300 rounded-lg shadow-sm"></textarea>
         </div>
       </div>
       <div class="flex justify-end space-x-4">
