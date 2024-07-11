@@ -98,6 +98,7 @@ class AgentCustomerController extends Controller
         $data['status'] = $request->input('status', 'pending');
 
         $user = CustomerUser::findOrFail($id);
+        $data['agent_id'] = Auth::guard('agent')->id(); // ここでエージェントIDを追加
         $user->update($data);
 
         return redirect()->route('agent.customer.index');
