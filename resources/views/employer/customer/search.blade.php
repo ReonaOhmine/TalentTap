@@ -167,7 +167,12 @@
         window.openModal = function (id) {
             console.log("Opening modal for candidate with ID:", id);
             fetch(`/api/get-candidate/${id}`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     const age = calculateAge(data.birthday);
                     document.getElementById('modal-title').textContent = '詳細情報';
@@ -238,7 +243,7 @@
 
             function fetchCandidates() {
                 console.log("Fetching candidates...");
-                fetch('/employer/customer/data')
+                fetch('https://freddy.sakura.ne.jp/TalentTap/TalentTap/employer/customer/data')
                     .then(response => {
                         if (!response.ok) {
                             console.error('Network response was not ok:', response.statusText);
