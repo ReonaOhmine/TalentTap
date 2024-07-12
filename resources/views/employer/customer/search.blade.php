@@ -166,7 +166,7 @@
 
         window.openModal = function (id) {
             console.log("Opening modal for candidate with ID:", id);
-            fetch(`/api/get-candidate/${id}`)
+            fetch(`https://freddy.sakura.ne.jp/TalentTap/TalentTap/api/get-candidate/${id}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
