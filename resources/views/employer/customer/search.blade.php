@@ -164,25 +164,20 @@
             return age;
         }
 
-        window.openModal = function (id) {
+        function openModal(id) {
             console.log("Opening modal for candidate with ID:", id);
-            fetch(`https://freddy.sakura.ne.jp/TalentTap/TalentTap/api/get-candidate/${id}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
+            fetch(`/api/get-candidate/${id}`)
+                .then(response => response.json())
                 .then(data => {
                     const age = calculateAge(data.birthday);
                     document.getElementById('modal-title').textContent = '詳細情報';
                     document.getElementById('modal-name-age-gender').textContent = `${data.initial}さん（${age}歳/${data.gender}）`;
-                    document.getElementById('modal-job-description').textContent = data.job_description;
-                    document.getElementById('modal-career-description').innerHTML = data.career_description.replace(/\n/g, '<br>');
+                    document.getElementById('modal-job-description').textContent = data.job_description || data.position; // job_descriptionが無い場合positionを表示
+                    document.getElementById('modal-career-description').innerHTML = (data.career_description || '').replace(/\n/g, '<br>');
                     document.getElementById('modal-desired-salary').textContent = `${data.desired_salary_min}万円 - ${data.desired_salary_max}万円`;
-                    document.getElementById('modal-notable-achievements').innerHTML = data.notable_achievements.replace(/\n/g, '<br>');
+                    document.getElementById('modal-notable-achievements').innerHTML = (data.notable_achievements || '').replace(/\n/g, '<br>');
                     document.getElementById('modal-catch-copy').textContent = data.catch_copy;
-                    document.getElementById('modal-num-companies-worked').textContent = data.num_companies_worked;
+                    document.getElementById('modal-num-companies-worked').textContent = `${data.num_companies_worked}社`;
                     document.getElementById('modal-work-preference').textContent = data.work_preference;
 
                     const skillMapContainer = document.getElementById('modal-skill-map');
@@ -190,12 +185,12 @@
                     for (let i = 1; i <= 3; i++) {
                         const skillDistribution = data[`skill_distribution_${i}`];
                         const skillComment = data[`skill_comment_${i}`];
-                        if (skillDistribution && skillComment) {
+                        if (skillDistribution) {
                             const skillItem = document.createElement('div');
                             skillItem.className = 'skill-map-item';
                             skillItem.innerHTML = `
                                 <span class="skill-map-label">${skillDistribution}</span>
-                                <span class="skill-map-description">${skillComment}</span>
+                                <span class="skill-map-description">${skillComment || ''}</span>
                             `;
                             skillMapContainer.appendChild(skillItem);
                         }
@@ -218,11 +213,11 @@
                 });
         }
 
-        window.closeModal = function () {
+        function closeModal() {
             document.getElementById('modal').classList.remove('modal-open');
         }
 
-        window.openConfirmationModal = function(candidateId, agentId) {
+        function openConfirmationModal(candidateId, agentId) {
             const confirmationModal = document.getElementById('confirmation-modal');
             confirmationModal.classList.add('modal-open');
 
@@ -243,7 +238,7 @@
 
             function fetchCandidates() {
                 console.log("Fetching candidates...");
-                fetch('https://freddy.sakura.ne.jp/TalentTap/TalentTap/employer/customer/data')
+                fetch('/employer/customer/data')
                     .then(response => {
                         if (!response.ok) {
                             console.error('Network response was not ok:', response.statusText);
@@ -259,7 +254,7 @@
                                 name: (customer.initial || '') + 'さん',
                                 age: calculateAge(customer.birthday),
                                 gender: customer.gender,
-                                jobDescription: customer.job_description || '',
+                                jobDescription: customer.job_description || customer.position, // job_descriptionが無い場合positionを使用
                                 salaryMin: customer.desired_salary_min,
                                 salaryMax: customer.desired_salary_max,
                                 summary: customer.catch_copy || '',

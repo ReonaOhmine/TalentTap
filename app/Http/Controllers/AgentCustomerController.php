@@ -18,7 +18,11 @@ class AgentCustomerController extends Controller
 
     public function getCandidate($id)
     {
-        $candidate = CustomerUser::find($id); // 修正: CustomerUserを使用
+
+        // テストレスポンスを返す
+        // return response()->json(['message' => 'This is a test response']);
+
+        $candidate = CustomerUser::find($id); 
         if (!$candidate) {
             return response()->json(['message' => 'Candidate not found'], 404);
         }

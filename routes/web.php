@@ -9,7 +9,6 @@ use App\Http\Controllers\Employer\CustomerController;
 use App\Http\Controllers\Agent\ProfileController as AgentProfileController;
 use App\Http\Controllers\AgentCustomerController;
 use App\Http\Controllers\Employer\ProfileController as EmployerProfileController;
-use App\Events\ExampleEvent;
 use App\Http\Controllers\Agent\DashboardController;
 use App\Http\Controllers\MessagesController;
 
@@ -18,78 +17,72 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//************* エージェント関連 *************//
-Route::prefix('agent')->name('agent.')->group(function () {
-    // ダッシュボード
-    Route::get('dashboard', [DashboardController::class, 'index'])
-        ->middleware('auth:agent')
-        ->name('dashboard');
+// エージェント関連ルート
+Route::get('agent/dashboard', [DashboardController::class, 'index'])
+    ->middleware('auth:agent')
+    ->name('agent.dashboard');
 
-    // 登録関連
-    Route::get('signup', [AgentSignupController::class, 'create'])->name('signup');
-    Route::post('signup', [AgentSignupController::class, 'store']);
+Route::get('agent/signup', [AgentSignupController::class, 'create'])->name('agent.signup');
+Route::post('agent/signup', [AgentSignupController::class, 'store']);
+Route::get('agent/login', [AgentLoginController::class, 'create'])->name('agent.login');
+Route::post('agent/login', [AgentLoginController::class, 'store']);
+Route::get('agent/profile', [AgentProfileController::class, 'show'])
+    ->middleware('auth:agent')
+    ->name('agent.profile');
+Route::get('agent/profile/edit', [AgentProfileController::class, 'edit'])
+    ->middleware('auth:agent')
+    ->name('agent.profile.edit');
+Route::patch('agent/profile', [AgentProfileController::class, 'update'])
+    ->middleware('auth:agent')
+    ->name('agent.profile.update');
 
-    // ログイン関連
-    Route::get('login', [AgentLoginController::class, 'create'])->name('login');
-    Route::post('login', [AgentLoginController::class, 'store']);
+Route::get('agent/customer/index', [AgentCustomerController::class, 'index'])->name('agent.customer.index');
+Route::get('agent/customer/create', [AgentCustomerController::class, 'create'])->name('agent.customer.create');
+Route::post('agent/customer/store', [AgentCustomerController::class, 'store'])->name('agent.customer.store');
+Route::get('agent/customer/edit/{id}', [AgentCustomerController::class, 'edit'])->name('agent.customer.edit');
+Route::patch('agent/customer/update/{id}', [AgentCustomerController::class, 'update'])->name('agent.customer.update');
 
-    // マイページ関連
-    Route::middleware('auth:agent')->group(function () {
-        Route::get('profile', [AgentProfileController::class, 'show'])->name('profile');
-        Route::get('profile/edit', [AgentProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('profile', [AgentProfileController::class, 'update'])->name('profile.update');
-    });
+Route::get('agent/messages', [MessagesController::class, 'agentIndex'])
+    ->middleware('auth:agent')
+    ->name('agent.messages.index');
+Route::post('agent/messages', [MessagesController::class, 'agentSendMessage'])
+    ->middleware('auth:agent')
+    ->name('agent.messages.send');
 
-    // 支援中ユーザー関連
-    Route::get('customer/index', [AgentCustomerController::class, 'index'])->name('customer.index');
-    Route::get('customer/create', [AgentCustomerController::class, 'create'])->name('customer.create');
-    Route::post('customer/store', [AgentCustomerController::class, 'store'])->name('customer.store');
-    Route::get('customer/edit/{id}', [AgentCustomerController::class, 'edit'])->name('customer.edit');
-    Route::patch('customer/update/{id}', [AgentCustomerController::class, 'update'])->name('customer.update');
+// 利用企業関連ルート
+Route::get('employer/dashboard', function () {
+    return view('employer.dashboard');
+})->middleware('auth:employer')->name('employer.dashboard');
 
-    // メッセージ関連
-    Route::middleware('auth:agent')->group(function () {
-        Route::get('messages', [MessagesController::class, 'agentIndex'])->name('messages.index');
-        Route::post('messages', [MessagesController::class, 'agentSendMessage'])->name('messages.send');
-    });
-});
+Route::get('employer/signup', [EmployerSignupController::class, 'create'])->name('employer.signup');
+Route::post('employer/signup', [EmployerSignupController::class, 'store']);
+Route::get('employer/login', [EmployerLoginController::class, 'create'])->name('employer.login');
+Route::post('employer/login', [EmployerLoginController::class, 'store']);
+Route::post('employer/logout', [EmployerLoginController::class, 'logout'])->name('employer.logout');
+Route::get('employer/profile', [EmployerProfileController::class, 'show'])
+    ->middleware('auth:employer')
+    ->name('employer.profile');
+Route::get('employer/profile/edit', [EmployerProfileController::class, 'edit'])
+    ->middleware('auth:employer')
+    ->name('employer.profile.edit');
+Route::patch('employer/profile', [EmployerProfileController::class, 'update'])
+    ->middleware('auth:employer')
+    ->name('employer.profile.update');
 
-//************* 利用企業関連 *************//
-Route::prefix('employer')->name('employer.')->group(function () {
-    // ダッシュボード
-    Route::get('dashboard', function () {
-        return view('employer.dashboard');
-    })->middleware('auth:employer')->name('dashboard');
+Route::get('employer/customer/search', function () {
+    return view('employer.customer.search');
+})->name('employer.customer.search');
+Route::get('employer/customer/data', [CustomerController::class, 'getCustomerData'])->name('employer.customer.data');
 
-    // 登録関連
-    Route::get('signup', [EmployerSignupController::class, 'create'])->name('signup');
-    Route::post('signup', [EmployerSignupController::class, 'store']);
+// get-candidate ルートの修正（プレフィックスなし）
+Route::get('api/get-candidate/{id}', [AgentCustomerController::class, 'getCandidate']);
 
-    // ログイン関連
-    Route::get('login', [EmployerLoginController::class, 'create'])->name('login');
-    Route::post('login', [EmployerLoginController::class, 'store']);
-    Route::post('logout', [EmployerLoginController::class, 'logout'])->name('logout');
-
-    // マイページ関連
-    Route::middleware('auth:employer')->group(function () {
-        Route::get('profile', [EmployerProfileController::class, 'show'])->name('profile');
-        Route::get('profile/edit', [EmployerProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('profile', [EmployerProfileController::class, 'update'])->name('profile.update');
-    });
-
-    // 候補者検索関連
-    Route::get('customer/search', function () {
-        return view('employer.customer.search');
-    })->name('customer.search');
-    Route::get('customer/data', [CustomerController::class, 'getCustomerData'])->name('customer.data');
-    Route::get('/api/get-candidate/{id}', [AgentCustomerController::class, 'getCandidate']);
-
-    // メッセージ関連
-    Route::middleware('auth:employer')->group(function () {
-        Route::get('messages', [MessagesController::class, 'employerIndex'])->name('messages.index');
-        Route::post('messages', [MessagesController::class, 'employerSendMessage'])->name('messages.send');
-    });
-});
+Route::get('employer/messages', [MessagesController::class, 'employerIndex'])
+    ->middleware('auth:employer')
+    ->name('employer.messages.index');
+Route::post('employer/messages', [MessagesController::class, 'employerSendMessage'])
+    ->middleware('auth:employer')
+    ->name('employer.messages.send');
 
 // ログインルート
 // Route::get('login', function () {
