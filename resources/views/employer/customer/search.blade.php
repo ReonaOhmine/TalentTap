@@ -166,7 +166,7 @@
 
         function openModal(id) {
             console.log("Opening modal for candidate with ID:", id);
-            fetch(`/api/get-candidate/${id}`)
+            fetch(`https://freddy.sakura.ne.jp/TalentTap/api/get-candidate/${id}`)
                 .then(response => response.json())
                 .then(data => {
                     const age = calculateAge(data.birthday);
