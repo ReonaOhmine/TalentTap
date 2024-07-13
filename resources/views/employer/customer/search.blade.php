@@ -172,7 +172,7 @@
                     const age = calculateAge(data.birthday);
                     document.getElementById('modal-title').textContent = '詳細情報';
                     document.getElementById('modal-name-age-gender').textContent = `${data.initial}さん（${age}歳/${data.gender}）`;
-                    document.getElementById('modal-job-description').textContent = data.job_description || data.position; // job_descriptionが無い場合positionを表示
+                    document.getElementById('modal-job-description').textContent = data.job_description || data.position;
                     document.getElementById('modal-career-description').innerHTML = (data.career_description || '').replace(/\n/g, '<br>');
                     document.getElementById('modal-desired-salary').textContent = `${data.desired_salary_min}万円 - ${data.desired_salary_max}万円`;
                     document.getElementById('modal-notable-achievements').innerHTML = (data.notable_achievements || '').replace(/\n/g, '<br>');
@@ -254,14 +254,14 @@
                                 name: (customer.initial || '') + 'さん',
                                 age: calculateAge(customer.birthday),
                                 gender: customer.gender,
-                                jobDescription: customer.job_description || customer.position, // job_descriptionが無い場合positionを使用
+                                jobDescription: customer.job_description || customer.position,
                                 salaryMin: customer.desired_salary_min,
                                 salaryMax: customer.desired_salary_max,
                                 summary: customer.catch_copy || '',
                                 details: customer.career_description || '',
                                 recommendation: customer.recommendation || '',
                                 match: customer.match_percentage,
-                                agentId: customer.agent_id // エージェントIDを追加
+                                agentId: customer.agent_id
                             });
                         });
                         console.log("Candidates:", candidates);
