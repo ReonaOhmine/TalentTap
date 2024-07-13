@@ -238,7 +238,7 @@
 
             function fetchCandidates() {
                 console.log("Fetching candidates...");
-                fetch('https://freddy.sakura.ne.jp/TalentTap/employer/customer/date')
+                fetch('https://freddy.sakura.ne.jp/TalentTap/employer/customer/data')
                     .then(response => {
                         if (!response.ok) {
                             console.error('Network response was not ok:', response.statusText);
