@@ -15,15 +15,17 @@
                 <p class="text-gray-600"><strong>Tel:</strong> {{ $employer->tel ?? '-' }}</p>
                 <p class="text-gray-600"><strong>HP URL:</strong> <a href="{{ $employer->hp_url ?? '#' }}" class="text-blue-600">{{ $employer->hp_url ?? '-' }}</a></p>
             </div>
+
             <div class="flex items-center justify-center">
                 @if ($employer->logo_image)
-                    <img src="{{ asset('storage/' . $employer->logo_image) }}" alt="Company Logo" class="w-32 h-32 object-cover rounded-full">
+                    <img src="{{ asset('storage/logos/' . $employer->logo_image) }}" alt="Company Logo" class="w-32 h-32 object-cover rounded-full">
                 @else
                     <div class="w-32 h-32 bg-gray-200 flex items-center justify-center rounded-full">
                         <span class="text-gray-500">No Logo</span>
                     </div>
                 @endif
             </div>
+            
         </div>
         <div class="mt-6 flex justify-center">
             <a href="{{ route('employer.profile.edit') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Edit Profile</a>
