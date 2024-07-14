@@ -198,11 +198,11 @@
 
                     const profilePicture = document.getElementById('profile-picture');
                     if (data.gender === '男性') {
-                        profilePicture.src = '/photo/boy.png';
+                        profilePicture.src = '/https://freddy.sakura.ne.jp/TalentTap/photo/boy.png';
                     } else if (data.gender === '女性') {
-                        profilePicture.src = '/photo/girl.png';
+                        profilePicture.src = 'https://freddy.sakura.ne.jp/TalentTap/photo/girl.png';
                     } else {
-                        profilePicture.src = '/photo/profile-picture.png';
+                        profilePicture.src = 'https://freddy.sakura.ne.jp/TalentTap/photo/profile-picture.png';
                     }
 
                     document.getElementById('modal').classList.add('modal-open');
