@@ -198,11 +198,11 @@
 
                     const profilePicture = document.getElementById('profile-picture');
                     if (data.gender === '男性') {
-                        profilePicture.src = '/photo/boy.png';
+                        profilePicture.src = '{{ asset('storage/photo/boy.png') }}';
                     } else if (data.gender === '女性') {
-                        profilePicture.src = '/photo/girl.png';
+                        profilePicture.src = '{{ asset('storage/photo/girl.png') }}';
                     } else {
-                        profilePicture.src = '/images/profile-picture.png';
+                        profilePicture.src = '{{ asset('storage/images/profile-picture.png') }}';
                     }
 
                     document.getElementById('modal').classList.add('modal-open');
