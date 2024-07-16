@@ -3,6 +3,7 @@
 @section('title', '求職者情報')
 
 @section('content')
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
     <div class="container mx-auto">
         <h1 class="text-xl font-bold mb-4">求職者情報</h1>
     </div>
