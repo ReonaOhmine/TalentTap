@@ -217,19 +217,19 @@
             document.getElementById('modal').classList.remove('modal-open');
         }
 
-        function openConfirmationModal(candidateId, agentId) {
-            const confirmationModal = document.getElementById('confirmation-modal');
-            confirmationModal.classList.add('modal-open');
+function openConfirmationModal(candidateId, agentId) {
+    const confirmationModal = document.getElementById('confirmation-modal');
+    confirmationModal.classList.add('modal-open');
 
-            document.getElementById('confirm-yes').onclick = function() {
-                window.location.href = `/employer/messages?receiver_id=${agentId}`;
-            }
+    document.getElementById('confirm-yes').onclick = function() {
+        window.location.href = `https://freddy.sakura.ne.jp/TalentTap/employer/messages?receiver_id=${agentId}`;
+    }
 
-            document.getElementById('confirm-no').onclick = function() {
-                confirmationModal.classList.remove('modal-open');
-                window.location.href = '/employer/customer/search';
-            }
-        }
+    document.getElementById('confirm-no').onclick = function() {
+        confirmationModal.classList.remove('modal-open');
+        window.location.href = 'https://freddy.sakura.ne.jp/TalentTap/employer/customer/search';
+    }
+}
 
         document.addEventListener('DOMContentLoaded', function () {
             const candidates = [];
