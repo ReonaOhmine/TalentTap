@@ -312,7 +312,7 @@ function openConfirmationModal(candidateId, agentId) {
                                 </div>
                                 <div class="bg-gray-100 p-4 rounded-lg w-1/2 ml-2">
                                     <h3 class="text-xl font-semibold mb-2">御社とのマッチ度</h3>
-                                    <p class="text-gray-700">${candidate.match}%</p>
+                                    <p class="text-gray-700">89%</p>
                                 </div>
                             </div>
                             <div class="flex justify-between items-center">
