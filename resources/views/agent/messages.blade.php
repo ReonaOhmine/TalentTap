@@ -21,8 +21,8 @@
         <div class="overflow-y-auto flex flex-col space-y-4">
             <h2 class="text-lg font-semibold mb-4">メッセージ</h2>
             @foreach($messages as $message)
-                <div class="flex {{ $message->sender_id == auth()->id() ? 'justify-end' : 'justify-start' }}">
-                    <div class="{{ $message->sender_id == auth()->id() ? 'bg-blue-200' : 'bg-gray-200' }} p-2 rounded-lg max-w-xs">
+                <div class="flex {{ $message->sender_id == auth()->id() && $message->sender_type == 'agent' ? 'justify-end' : 'justify-start' }}">
+                    <div class="{{ $message->sender_id == auth()->id() && $message->sender_type == 'agent' ? 'bg-blue-200' : 'bg-gray-200' }} p-2 rounded-lg max-w-xs">
                         <p>{{ $message->message }}</p>
                         <small>{{ $message->created_at->format('Y-m-d H:i') }}</small>
                     </div>
