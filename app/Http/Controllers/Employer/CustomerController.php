@@ -10,8 +10,9 @@ class CustomerController extends Controller
 {
     public function getCustomerData()
     {
-        $customers = CustomerUser::all();
+        // id の降順でデータを取得するように変更
+        $customers = CustomerUser::orderBy('id', 'desc')->get();
 
         return response()->json($customers);
     }
-};
+}
